@@ -149,9 +149,14 @@ export function calculateBaseStats(design: ShipDesign) {
     return resources
   }()
 
+  const baseSpeed = baseMass / drive.baseThrust
+  const baseFTL = baseMass / drive.baseFTL
+
   return {
     baseHp,
+    baseFTL,
     baseMass,
+    baseSpeed,
     baseResists,
     basePowerInput,
     basePowerOutput,

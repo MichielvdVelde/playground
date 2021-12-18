@@ -27,7 +27,7 @@ export const data: Record<string, any> = {
     level: 1,
     basePowerInput: 25000,
     baseThrust: 50000,
-    baseFTL: 25,
+    baseFTL: 2500,
   },
   reactor1: {
     name: 'Reactor I',
