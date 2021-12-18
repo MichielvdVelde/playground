@@ -45,7 +45,7 @@ export type ShipSlot = Weapon | Carry | Enhancement
 
 export interface Weapon extends ShipPart {
   type: WeaponTypes,
-  power: number,
+  basePower: number,
   baseFallOff: number,
   basePowerInput: number
   baseCooldown?: number,
