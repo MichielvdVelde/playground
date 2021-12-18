@@ -1,4 +1,4 @@
-import { data } from './static.js'
+import { data } from './static'
 
 interface BaseShape<Type = any> {
   _id: Type,

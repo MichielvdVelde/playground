@@ -39,5 +39,18 @@ export const data: Record<string, any> = {
     baseMass: 24500,
     level: 1,
     basePowerOutput: 500000,
+  },
+  enhancement1: {
+    name: 'Enhancement 1',
+    description: '',
+    baseConstructionTime: 90,
+    baseConstructionResources: {
+      H: 25
+    },
+    baseMass: 500,
+    level: 1,
+    type: 'resist:kinetic',
+    basePowerInput: 1000,
+    baseModifier: 1.1,
   }
 }

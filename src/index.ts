@@ -1,8 +1,8 @@
-import { calculateBaseStats } from './calculator.js'
+import { calculateBaseStats } from './calculator'
 
 console.log(calculateBaseStats({
   hull: 'hull1',
   drive: 'drive1',
   reactor: 'reactor1',
-  slots: []
+  slots: ['enhancement1'],
 }))
