@@ -1,11 +1,7 @@
-# Playground
+# Ship Designer
 
-My own personal playground repository.
+Ship designer for an RTS-like game.
 
-This repo contains things I'm working on or testing for learning or for the fun
-of it.
+## Goals
 
-See the branches for the repo's content.
-
-> All code I publish here is available as-is under the IDC (I Don't Care)
-> license.
+Get tests and code coverage working with `jest`, ES modules, and TypeScript.

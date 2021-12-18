@@ -1,0 +1,24 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "Ship designer for an RTS-like game.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichielvdVelde/playground.git"
+  },
+  "keywords": [],
+  "author": "Michiel van der Velde <michiel@michielvdvelde.nl> (https://michielvdvelde.nl",
+  "bugs": {
+    "url": "https://github.com/MichielvdVelde/playground/issues"
+  },
+  "homepage": "https://github.com/MichielvdVelde/playground#readme",
+  "devDependencies": {
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2"
+  }
+}
