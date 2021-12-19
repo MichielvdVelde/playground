@@ -7,7 +7,7 @@ import { distance3D, distance2D } from './math.js'
 // move to another file
 export type WeaponTypes = 'em' | 'thermal' | 'kinetic'
 
-interface UnitShape extends BaseShape<string> {
+interface UnitShape extends BaseShape {
   hp: number
   maxHp: number
   room?: [x: number, y: number, z: number]

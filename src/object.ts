@@ -1,5 +1,5 @@
-export interface BaseShape<Type = any> {
-  _id: Type
+export interface BaseShape {
+  _id: string
 }
 
 type Constructor<T extends BaseShape> = new (...args: any[]) => GameObject<T>

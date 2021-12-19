@@ -4,7 +4,7 @@ import { GameObject } from '../object.js'
 import { RoomLocation } from './room.js'
 import { Position } from './position.js'
 
-interface StructureShape extends BaseShape<string> {
+interface StructureShape extends BaseShape {
   owner: string
 }
 
