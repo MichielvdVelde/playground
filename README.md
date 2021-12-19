@@ -1,7 +1,3 @@
-# Ship Designer
+# Game
 
-Ship designer for an RTS-like game.
-
-## Goals
-
-Get tests and code coverage working with `jest`, ES modules, and TypeScript.
+All kinds of dev and test for a text-based game.
