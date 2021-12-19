@@ -141,7 +141,7 @@ export class HeroUnit extends Unit<HeroUnitShape> {
         xp -= this['#data'].xpToNextLevel
         this['#data'].xpToNextLevel = 1000 * this['#data'].level
       } else {
-        this['#data'].xpToNextLevel += xp
+        this['#data'].xpToNextLevel -= xp
         break
       }
     }
