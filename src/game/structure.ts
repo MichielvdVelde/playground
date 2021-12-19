@@ -1,13 +1,18 @@
 import type { BaseShape } from '../object'
-import type { AttackableGameObject, DestructibleGameObject, WeaponTypes } from './unit'
+import type { AttackableGameObject, ColonyGameObject, DestructibleGameObject, OwnedGameObject, WeaponTypes } from './unit'
 import { GameObject } from '../object.js'
 import { RoomLocation } from './room.js'
 import { Position } from './position.js'
 
-interface StructureShape extends BaseShape<string> {}
+interface StructureShape extends BaseShape<string> {
+  owner: string
+}
 
-export abstract class Structure<Shape extends StructureShape> extends GameObject<Shape> {
-  //
+/**
+ * Represents a generic structure.
+ */
+export abstract class Structure<Shape extends StructureShape> extends GameObject<Shape> implements OwnedGameObject {
+  get owner() { return this['#data'].owner }
 }
 
 interface RoomStructureShape extends StructureShape {
@@ -17,6 +22,9 @@ interface RoomStructureShape extends StructureShape {
   maxHp: number
 }
 
+/**
+ * Represents a structure placed in a room.
+ */
 export abstract class RoomStructure<Shape extends RoomStructureShape> extends GameObject<Shape> implements AttackableGameObject, DestructibleGameObject {
   get room() {
     return this['#data'].room ? new RoomLocation(this['#data'].room) : undefined
@@ -41,9 +49,14 @@ export abstract class RoomStructure<Shape extends RoomStructureShape> extends Ga
 }
 
 interface SurfaceStructureShape extends StructureShape {
+  colonyId: string,
   pos: [x: number, y: number]
 }
 
-export abstract class SurfaceStructure<Shape extends SurfaceStructureShape> extends GameObject<Shape> {
+/**
+ * Represents a structure placed on the surface of a colony.
+ */
+export abstract class SurfaceStructure<Shape extends SurfaceStructureShape> extends GameObject<Shape> implements ColonyGameObject {
+  get colonyId(): string { return this['#data'].colonyId }
   get position() { return this['#data'].pos }
 }

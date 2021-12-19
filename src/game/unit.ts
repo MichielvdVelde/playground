@@ -15,6 +15,18 @@ interface UnitShape extends BaseShape<string> {
 }
 
 // move to another file
+export interface OwnableGameObject extends GameObject<any> {
+  readonly owner?: string
+}
+
+export interface OwnedGameObject extends GameObject<any> {
+  readonly owner: string
+}
+
+export interface ColonyGameObject extends GameObject<any> {
+  readonly colonyId: string
+}
+
 export interface MobileGameObject extends GameObject<any> {
   readonly room?: RoomLocation
   readonly pos?: Position
@@ -57,10 +69,21 @@ export  interface AttackableGameObject extends DestructibleGameObject {
 }
 
 export interface CombatGameObject extends AttackableGameObject {
+  /**
+   * Attack another game object.
+   * @param target The target game object
+   * @param weapon The weapon type
+   * @param power The damage power
+   * @param range The weapon range
+   * @returns The relative damage power
+   */
   ['#attack'](target: GameObject<any> & AttackableGameObject, weapon: WeaponTypes, power: number, range: number): number
 }
 
-export abstract class Unit<Shape extends UnitShape> extends GameObject<Shape> implements MobileGameObject, AttackableGameObject, CombatGameObject {
+/**
+ * Represents a basic unit.
+ */
+export class Unit<Shape extends UnitShape> extends GameObject<Shape> implements MobileGameObject, AttackableGameObject, CombatGameObject {
   get room() {
     return this['#data'].room ? new RoomLocation(this['#data'].room) : undefined
   }
@@ -97,5 +120,35 @@ export abstract class Unit<Shape extends UnitShape> extends GameObject<Shape> im
 
   ['#attack'](target: GameObject<any> & AttackableGameObject, weapon: WeaponTypes, power: number, range: number) {
     return 6
+  }
+}
+
+interface HeroUnitShape extends UnitShape {
+  level: number
+  xp: number
+  xpToNextLevel: number
+}
+
+/**
+ * Represents a hero-unit.
+ */
+export class HeroUnit extends Unit<HeroUnitShape> {
+  ['#addXp'](xp: number) {
+    while(true) {
+      if (xp > this['#data'].xpToNextLevel) {
+        this['#data'].level++
+        this['#data'].xp = 0
+        xp -= this['#data'].xpToNextLevel
+        this['#data'].xpToNextLevel = 1000 * this['#data'].level
+      } else {
+        this['#data'].xpToNextLevel += xp
+        break
+      }
+    }
+  }
+
+  ['#areaAttack'](type: WeaponTypes, power: number, range: number) {
+    // locate all targets in range
+    // attack them
   }
 }
