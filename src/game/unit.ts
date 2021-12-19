@@ -7,14 +7,6 @@ import { distance3D, distance2D } from './math.js'
 // move to another file
 export type WeaponTypes = 'em' | 'thermal' | 'kinetic'
 
-interface UnitShape extends BaseShape {
-  hp: number
-  maxHp: number
-  room?: [x: number, y: number, z: number]
-  pos?: [x: number, y: number]
-}
-
-// move to another file
 export interface OwnableGameObject extends GameObject<any> {
   readonly owner?: string
 }
@@ -78,6 +70,13 @@ export interface CombatGameObject extends AttackableGameObject {
    * @returns The relative damage power
    */
   ['#attack'](target: GameObject<any> & AttackableGameObject, weapon: WeaponTypes, power: number, range: number): number
+}
+
+interface UnitShape extends BaseShape {
+  hp: number
+  maxHp: number
+  room?: [x: number, y: number, z: number]
+  pos?: [x: number, y: number]
 }
 
 /**

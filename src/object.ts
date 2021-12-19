@@ -4,6 +4,11 @@ export interface BaseShape {
 
 type Constructor<T extends BaseShape> = new (...args: any[]) => GameObject<T>
 
+type IntentContext<Payload = any> = {
+  userId?: string
+  payload: Payload
+}
+
 declare global {
   var Processor: {
     /**
@@ -12,7 +17,7 @@ declare global {
      * @param intent The intent name
      * @param processor The intent processor
      */
-    register<Target extends Constructor<any>>(target: Target, intent: string, processor: (target: InstanceType<Target>) => void): void
+    register<Target extends Constructor<any>, Payload = any>(target: Target, intent: string, processor: (target: InstanceType<Target>, context: IntentContext<Payload>) => void): void
     
     /**
      * Schedule an intent for delayed execution.
@@ -50,7 +55,7 @@ declare global {
      * @param target The target(s)
      * @param query The search query
      */
-    find<T extends Constructor<any>>(target: (T | T[]) | string | string[], query: any): Promise<InstanceType<T>[]>
+    find<T extends Constructor<any>>(target: (T | string)[] | string | string[] | T | T[], query: any): Promise<InstanceType<T>[]>
   }
 }
 

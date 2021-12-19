@@ -27,11 +27,11 @@ interface RoomStructureShape extends StructureShape {
  */
 export abstract class RoomStructure<Shape extends RoomStructureShape> extends GameObject<Shape> implements AttackableGameObject, DestructibleGameObject {
   get room() {
-    return this['#data'].room ? new RoomLocation(this['#data'].room) : undefined
+    return new RoomLocation(this['#data'].room)
   }
 
   get pos() {
-    return this['#data'].pos ? new Position(this['#data'].pos) : undefined
+    return new Position(this['#data'].pos)
   }
 
   get hp() { return this['#data'].hp }
