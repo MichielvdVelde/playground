@@ -82,7 +82,7 @@ interface UnitShape extends BaseShape {
 /**
  * Represents a basic unit.
  */
-export class Unit<Shape extends UnitShape> extends GameObject<Shape> implements MobileGameObject, AttackableGameObject, CombatGameObject {
+export class Unit<Shape extends UnitShape = UnitShape> extends GameObject<Shape> implements MobileGameObject, AttackableGameObject, CombatGameObject {
   get room() {
     return this['#data'].room ? new RoomLocation(this['#data'].room) : undefined
   }
@@ -146,8 +146,9 @@ export class HeroUnit extends Unit<HeroUnitShape> {
     }
   }
 
-  ['#areaAttack'](type: WeaponTypes, power: number, range: number) {
+  ['#areaAttack'](type: WeaponTypes, power: number, range: number): [targets: number, dmg: number] {
     // locate all targets in range
     // attack them
+    return [1,100]
   }
 }

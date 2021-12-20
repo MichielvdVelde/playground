@@ -2,7 +2,7 @@ export interface BaseShape {
   _id: string
 }
 
-type Constructor<T extends BaseShape> = new (...args: any[]) => GameObject<T>
+type Constructor<Shape extends BaseShape> = new (data: any) => GameObject<Shape>
 
 type IntentContext<Payload = any> = {
   userId?: string
@@ -24,9 +24,10 @@ declare global {
      * @param target The target game object
      * @param intent The intent name
      * @param delay The delay in milliseconds
+     * @param key The job key
      * @returns The job ID
      */
-    schedule<Target extends Constructor<any>>(target: Target, intent: string, delay: number): Promise<string>
+    schedule<Target extends Constructor<any>>(target: Target, intent: string, delay: number, key: string): Promise<string>
     
     /**
      * Execute an intent.
@@ -51,14 +52,32 @@ declare global {
     register<Target extends Constructor<any>>(target: Target, name?: string): void
 
     /**
+     * Find a game object by its ID.
+     * @param target The target game object
+     * @param id The target ID
+     */
+    findById<Target extends Constructor<any>>(target: Target, id: string): Promise<InstanceType<Target> | undefined>
+
+    /**
+     * Find the first matching game object.
+     * @param target The target game object
+     * @param query The search query
+     */
+    findOne<Target extends Constructor<any>>(target: Target, query: any): Promise<InstanceType<Target> | undefined>
+
+    /**
      * Find objects by the given search query.
      * @param target The target(s)
      * @param query The search query
      */
-    find<T extends Constructor<any>>(target: (T | string)[] | string | string[] | T | T[], query: any): Promise<InstanceType<T>[]>
+    find<Target extends Constructor<any>>(target: Target | string | (Target | string)[], query: any): Promise<InstanceType<Target>[]>
   }
 }
 
+/**
+ * Represents a base game object.
+ * Game objects are persisted to the database.
+ */
 export abstract class GameObject<Shape extends BaseShape> {
   ['#data']: Shape
 
