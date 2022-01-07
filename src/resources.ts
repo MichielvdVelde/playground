@@ -8,14 +8,20 @@ type Water = 'Water'
 type TerrainTypes = Desert | Tundra | Prairie | Forest | Swamp | Jungle | Water
 
 type Food = 'F'
+type Wood = 'W'
+type Iron = 'Fe'
 type Silicon = 'Si'
-type ResourceTypes = Food | Silicon
+type Hydrogen = 'H'
+type ResourceTypes = Food | Wood | Iron | Silicon | Hydrogen
 
-const terrainToResource: Partial<Record<TerrainTypes, ResourceTypes>> = {
+const terrainToResource: Readonly<Partial<Record<TerrainTypes, ResourceTypes>>> = {
   Desert: 'Si',
   Prairie: 'F',
-  Forest: 'F',
   Water: 'F',
+  Forest: 'W',
+  Jungle: 'W',
+  Tundra: 'Fe',
+  Swamp: 'H',
 }
 
 var Game: any
@@ -32,7 +38,7 @@ const kMaxLevel = 10
 const kOutputPerLevel = 1
 
 // Needs to be called on each turn for each tile that is being worked by the player.
-function setWorkedBy(x: number, y: number, player: number) {
+export function setWorkedBy(x: number, y: number, player: number) {
   const pos = `${x}:${y}`
   const tile = improvedTiles[pos]
   improvedTiles[pos] = {
@@ -47,7 +53,7 @@ function setWorkedBy(x: number, y: number, player: number) {
   }
 }
 
-function postTurn() {
+export function postTurn() {
   // Upgrade tiles if necessary
   Object.values(improvedTiles).filter(tile => !!tile.turnsToNextLevel && tile.time === Game.time).forEach(tile => {
     tile.turnsToNextLevel--
@@ -67,10 +73,10 @@ function getTerrainType(x: number, y: number): TerrainTypes {
   return 'Desert'
 }
 
-function getResources() {
+export function getResources() {
   const resources: Record<number, Partial<Record<ResourceTypes, number>>> = {}
   Object.entries(improvedTiles).filter(([, tile]) => !!tile.owner).forEach(([key, tile]) => {
-    const [x, y] = key.split(':').map(key => parseInt(key))
+    const [x, y] = key.split(':').map(coord => parseInt(coord))
     const terrainType = getTerrainType(x, y)
     const resourceForTile = terrainToResource[terrainType]
     if (resourceForTile) {
