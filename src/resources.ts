@@ -14,7 +14,7 @@ type Silicon = 'Si'
 type Hydrogen = 'H'
 type ResourceTypes = Food | Wood | Iron | Silicon | Hydrogen
 
-const terrainToResource: Readonly<Partial<Record<TerrainTypes, ResourceTypes>>> = {
+const terrainToResource: Readonly<Record<TerrainTypes, ResourceTypes>> = {
   Desert: 'Si',
   Prairie: 'F',
   Water: 'F',
@@ -30,7 +30,7 @@ const improvedTiles: Record<string, {
   owner: number,
   level: number,
   time: number,
-  turnsToNextLevel: number,
+  turnsToNextLevel?: number,
 }> = {}
 
 const kTurnsToNextLevel = 12
@@ -49,14 +49,14 @@ export function setWorkedBy(x: number, y: number, player: number) {
       ? tile.turnsToNextLevel
       : tile.level ?? 1 < kMaxLevel
         ? kTurnsToNextLevel
-        : undefined
+        : undefined as never
   }
 }
 
 export function postTurn() {
   // Upgrade tiles if necessary
   Object.values(improvedTiles).filter(tile => !!tile.turnsToNextLevel && tile.time === Game.time).forEach(tile => {
-    tile.turnsToNextLevel--
+    tile.turnsToNextLevel!--
     if (tile.turnsToNextLevel === 0) {
       tile.level++
 
