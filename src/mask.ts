@@ -92,4 +92,15 @@ export class BoardMask {
       objects.forEach(object => this.#objects[object.id] = object)
     })
   }
+  
+  toJSON() {
+    return {
+      explored: this.#explored,
+      objects: this.#objects,
+    }
+  }
+
+  toString() {
+    return '[BoardMask]'
+  }
 }
