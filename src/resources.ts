@@ -27,7 +27,7 @@ const terrainToResource: Readonly<Record<TerrainTypes, ResourceTypes>> = {
 var Game: any
 
 const improvedTiles: Record<string, {
-  owner: number,
+  owner?: number,
   level: number,
   time: number,
   turnsToNextLevel?: number,
@@ -50,6 +50,15 @@ export function setWorkedBy(x: number, y: number, player: number) {
       : tile.level ?? 1 < kMaxLevel
         ? kTurnsToNextLevel
         : undefined as never
+  }
+}
+
+// Called when the tile is abandoned by the player
+export function abandonedBy(x: number, y: number, player: number) {
+  const pos = `${x}:${y}`
+  const tile = improvedTiles[pos]
+  if (tile?.owner === player) {
+    delete tile.owner
   }
 }
 
@@ -80,10 +89,10 @@ export function getResources() {
     const terrainType = getTerrainType(x, y)
     const resourceForTile = terrainToResource[terrainType]
     if (resourceForTile) {
-      if (!resources[tile.owner]) {
-        resources[tile.owner] = {}
+      if (!resources[tile.owner!]) {
+        resources[tile.owner!] = {}
       }
-      resources[tile.owner][resourceForTile] = (resources[tile.owner][resourceForTile] ?? 0) + (tile.level * kOutputPerLevel)
+      resources[tile.owner!][resourceForTile] = (resources[tile.owner!][resourceForTile] ?? 0) + (tile.level * kOutputPerLevel)
     }
   })
   return resources
