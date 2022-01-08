@@ -45,7 +45,7 @@ export class BoardMask {
   }
 
   // Set for every tile which is visible during the active turn
-  set explored(pos: [x: number, y: number]) {
+  explored(pos: [x: number, y: number]) {
     const info = this.#explored.find(explored => explored[0] === pos[0] && explored[1] === pos[1])
     if (info) {
       info[2] = Game.time
