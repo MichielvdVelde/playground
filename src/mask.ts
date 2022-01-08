@@ -79,14 +79,16 @@ export class BoardMask {
       })
 
       const objectIds = objects.map(o => o.id)
-      // Remove the object id from a current location, if any
-      this.#explored.forEach(e => {
-        for (const objectId of objectIds) {
-          if (e[3].includes(objectId)) {
-            e[3].splice(e[3].indexOf(objectId), 1)
+      if (objectIds.length) {
+        // Remove the object id from a current location, if any
+        this.#explored.forEach(e => {
+          for (const objectId of objectIds) {
+            if (e[3].includes(objectId)) {
+              e[3].splice(e[3].indexOf(objectId), 1)
+            }
           }
-        }
-      })
+        })
+      }
 
       explored[3] = objectIds
       objects.forEach(object => this.#objects[object.id] = object)
