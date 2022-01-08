@@ -68,9 +68,7 @@ export class BoardMask {
   }
 
   getObjectsAtPosition(pos: [x: number, y: number]) {
-    return Object.values(this.#explored).filter(explored => explored[0] === pos[0] && explored[1] === pos[1]).map(explored => {
-      return explored[3].map(id => this.#objects[id])
-    })
+    return Object.values(this.#explored).find(explored => explored[0] === pos[0] && explored[1])?.[3]
   }
 
   [PostTick]() {
