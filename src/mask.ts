@@ -63,7 +63,8 @@ export class BoardMask {
   }
 
   getAgeAtPosition(pos: [x: number, y: number]) {
-    return Game.time - (this.getTimeAtPosition(pos) ?? 0)
+    const time = this.getTimeAtPosition(pos)
+    return time ? Game.time - time : undefined
   }
 
   getObjectsAtPosition(pos: [x: number, y: number]) {
