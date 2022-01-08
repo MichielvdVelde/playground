@@ -58,6 +58,10 @@ export class BoardMask {
     return this.#explored.find(explored => explored[0] === pos[0] && explored[1] === pos[1]) ? true : false
   }
 
+  getInfoAtPosition(pos: [x: number, y: number]) {
+    return this.#explored.find(explored => explored[0] === pos[0] && explored[1] === pos[1])
+  }
+
   getTimeAtPosition(pos: [x: number, y: number]) {
     return this.#explored.find(explored => explored[0] === pos[0] && explored[1])?.[2]
   }
