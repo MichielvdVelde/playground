@@ -41,19 +41,17 @@ export class Locus {
   }
 
   set pos(pos: [x: number, y: number]) {
-    const prev = this.#pos
-    this.#pos = pos
-    if (this.#pos[0] !== prev[0] || this.#pos[1] !== prev[1]) {
+    if (this.#pos[0] !== pos[0] || this.#pos[1] !== pos[1]) {
+      this.#pos = pos
       this.#points = this.#calcPoints()
     }
   }
 
   set radius(radius: number) {
-    if (this.#radius === radius) {
-      return
+    if (this.#radius !== radius) {
+      this.#radius = radius
+      this.#points = this.#calcPoints()
     }
-    this.#radius = radius
-    this.#points = this.#calcPoints()
   }
 
   // Get all points inside the locus
