@@ -47,7 +47,7 @@ export function setWorkedBy(x: number, y: number, player: number) {
     time: Game.time,
     turnsToNextLevel: tile?.owner === player && tile.turnsToNextLevel
       ? tile.turnsToNextLevel
-      : tile.level ?? 1 < kMaxLevel
+      : tile?.level ?? 1 < kMaxLevel
         ? kTurnsToNextLevel
         : undefined as never
   }
@@ -64,7 +64,7 @@ export function abandonedBy(x: number, y: number, player: number) {
 
 export function postTurn() {
   // Upgrade tiles if necessary
-  Object.values(improvedTiles).filter(tile => !!tile.turnsToNextLevel && tile.time === Game.time).forEach(tile => {
+  Object.values(improvedTiles).filter(tile => !!tile.turnsToNextLevel && tile.time === Game.time && !!tile.owner).forEach(tile => {
     tile.turnsToNextLevel!--
     if (tile.turnsToNextLevel === 0) {
       tile.level++
