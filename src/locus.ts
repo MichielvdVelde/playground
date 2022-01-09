@@ -4,14 +4,7 @@ export class Locus {
   // Combine multile loci and return all points inside all loci
   static combine(...loci: Locus[]): [x: number, y: number][] {
     const combined: [x: number, y: number][] = []
-    const has = (pos: [x: number, y: number]) => {
-      for (const [x, y] of combined) {
-        if (pos[0] === x && pos[1] === y) {
-          return true
-        }
-      }
-      return false
-    }
+    const has = (pos: [x: number, y: number]) => combined.some(c => pos[0] === c[0] && pos[1] === c[1])
     for (const locus of loci) {
       for (const point of locus.points) {
         if (!has(point)) {
