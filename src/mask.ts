@@ -23,6 +23,10 @@ export class Board {
   getObjectsAtPosition(pos: [x: number, y: number]) {
     return Object.values(this.#objects).filter(object => object.pos[0] === pos[0] && object.pos[1] === pos[1])
   }
+
+  getObjectById<Type extends BoardObject<any>>(id: number): Type | undefined {
+    return this.#objects[id] as Type | undefined
+  }
 }
 
 const acceptableKeys = ['id', 'kind', 'owner', 'hp']
