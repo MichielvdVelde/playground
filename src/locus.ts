@@ -58,12 +58,11 @@ export class Locus {
 
   // Calculate all points inside the locus
   #calcPoints(): [x: number, y: number][] {
-    // Brute-force find all points in a circle by tracing a square and running a distance method
-    // on each coordinate. There probably is a better way to do this.
+    // Brute-force find all points in a circle by tracing a square and running a distance method on each coordinate.
     const points: [x: number, y: number][] = []
     for (let x = this.#pos[0] - this.#radius; x <= this.#pos[0] + this.#radius; x++) {
       for (let y = this.#pos[1] - this.#radius; y <= this.#pos[1] + this.#radius; y++) {
-        if (distance2D(this.#pos, [x, y]) <= this.#radius) {
+        if (this.isInside([x, y])) {
           points.push([x, y])
         }
       }
