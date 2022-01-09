@@ -1,6 +1,27 @@
 import { distance2D } from './util.js'
 
 export class Locus {
+  // Combine multile loci and return all points inside all loci
+  static combine(...loci: Locus[]): [x: number, y: number][] {
+    const combined: [x: number, y: number][] = []
+    const has = (pos: [x: number, y: number]) => {
+      for (const [x, y] of combined) {
+        if (pos[0] === x && pos[1] === y) {
+          return true
+        }
+      }
+      return false
+    }
+    for (const locus of loci) {
+      for (const point of locus.points) {
+        if (!has(point)) {
+          combined.push(point)
+        }
+      }
+    }
+    return combined
+  }
+
   #pos: [x: number, y: number]
   #radius: number
   #points: [x: number, y: number][]
