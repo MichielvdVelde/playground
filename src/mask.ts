@@ -100,8 +100,8 @@ export class BoardMask {
     for (const array of Object.values(this.#explored)) {
       for (const info of Object.values(array)) {
         if (info[1].length) {
-          for (const objectId of info[1]) {
-            if (objectIds.includes(objectId)) {
+          for (const objectId of objectIds) {
+            if (info[1].includes(objectId)) {
               info[1].splice(info[1].indexOf(objectId), 1)
             }
           }
