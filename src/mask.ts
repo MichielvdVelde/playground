@@ -71,11 +71,11 @@ export class BoardMask {
 
   getAgeAtPosition(pos: [x: number, y: number]) {
     const time = this.getTimeAtPosition(pos)
-    return typeof time === 'number' ? Game.time - time : undefined
+    return time ? Game.time - time : undefined
   }
 
   getObjectsAtPosition(pos: [x: number, y: number]) {
-    return this.#explored[pos[0]]?.[pos[1]]?.[1].map(id => this.#objects[id])
+    return this.#explored[pos[0]]?.[pos[1]]?.[1]?.map(id => this.#objects[id])
   }
 
   [PostTick]() {
@@ -87,11 +87,25 @@ export class BoardMask {
         const objects = this.board.getObjectsAtPosition([x as never, y as never]).map(object => makeExploredObject(object))
         const objectIds = objects.map(o => o.id)
         if (objectIds.length) {
-          // TODO: remove id from possible previous location
+          this.#removeObjectIds(objectIds)
         }
 
         info[1] = objectIds
         objects.forEach(object => this.#objects[object.id] = object)
+      }
+    }
+  }
+
+  #removeObjectIds(objectIds: number[],) {
+    for (const array of Object.values(this.#explored)) {
+      for (const info of Object.values(array)) {
+        if (info[1].length) {
+          for (const objectId of info[1]) {
+            if (objectIds.includes(objectId)) {
+              info[1].splice(info[1].indexOf(objectId), 1)
+            }
+          }
+        }
       }
     }
   }
