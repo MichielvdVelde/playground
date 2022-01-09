@@ -1,3 +1,5 @@
+import { Locus } from './locus.js'
+
 const Data = Symbol('data')
 const PostTurn = Symbol('postTurn')
 
@@ -50,16 +52,19 @@ export class BoardMask {
     this.board = board
   }
 
-  // Set for every tile which is visible during the active turn
-  explored(pos: [x: number, y: number]) {
-    const info = this.#explored[pos[0]]?.[pos[1]]
-    if (info) {
-      info[0] = Game.time
-    } else {
-      if (!this.#explored[pos[0]]) {
-        this.#explored[pos[0]] = {}
+  // Set all visible points to explored in the current turn
+  explored(...loci: Locus[]) {
+    const combined = Locus.combine(...loci)
+    for (const pos of combined) {
+      const info = this.#explored[pos[0]]?.[pos[1]]
+      if (info) {
+        info[0] = Game.time
+      } else {
+        if (!this.#explored[pos[0]]) {
+          this.#explored[pos[0]] = {}
+        }
+        this.#explored[pos[0]][pos[1]] = [Game.time, []]
       }
-      this.#explored[pos[0]][pos[1]] = [Game.time, []]
     }
   }
 

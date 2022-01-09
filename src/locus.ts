@@ -1,7 +1,7 @@
 import { distance2D } from './util.js'
 
 export class Locus {
-  // Combine multile loci and return all points inside all loci
+  // Combine multile loci and return all points inside said loci
   static combine(...loci: Locus[]): [x: number, y: number][] {
     const combined: [x: number, y: number][] = []
     const has = (pos: [x: number, y: number]) => combined.some(c => pos[0] === c[0] && pos[1] === c[1])
@@ -13,6 +13,16 @@ export class Locus {
       }
     }
     return combined
+  }
+
+  // Check if a point is inside any of the given loci
+  static contains(pos: [x: number, y: number], ...loci: Locus[]): boolean {
+    for (const locus of loci) {
+      if (locus.isInside(pos)) {
+        return true
+      }
+    }
+    return false
   }
 
   #pos: [x: number, y: number]
@@ -58,7 +68,7 @@ export class Locus {
 
   // Calculate all points inside the locus
   #calcPoints(): [x: number, y: number][] {
-    // Brute-force find all points in a circle by tracing a square and running a distance method on each coordinate.
+    // Find all points in a circle by tracing a square and running a distance method on each coordinate.
     const points: [x: number, y: number][] = []
     for (let x = this.#pos[0] - this.#radius; x <= this.#pos[0] + this.#radius; x++) {
       for (let y = this.#pos[1] - this.#radius; y <= this.#pos[1] + this.#radius; y++) {
