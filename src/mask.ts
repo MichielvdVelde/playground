@@ -17,14 +17,16 @@ export class BoardObject<Shape extends BaseShape> {
   get pos() { return this[Data].pos }
 }
 
+type AnyBoardObject = BoardObject<any>
+
 export class Board {
-  #objects: Record<number, BoardObject<any>> = {}
+  #objects: Record<number, AnyBoardObject> = {}
 
   getObjectsAtPosition(pos: [x: number, y: number]) {
     return Object.values(this.#objects).filter(object => object.pos[0] === pos[0] && object.pos[1] === pos[1])
   }
 
-  getObjectById<Type extends BoardObject<any>>(id: number): Type | undefined {
+  getObjectById<Type extends AnyBoardObject>(id: number): Type | undefined {
     return this.#objects[id] as Type | undefined
   }
 }
@@ -32,7 +34,7 @@ export class Board {
 const acceptableKeys = ['id', 'kind', 'owner', 'hp']
 const isAcceptable = (key: string) => acceptableKeys.includes(key)
 
-function makeExploredObject(object: BoardObject<any>) {
+function makeExploredObject(object: AnyBoardObject) {
   return Object.keys(object[Data]).filter(isAcceptable).reduce<Record<string, any>>((obj, key) => {
     obj[key] = object[Data][key]
     return obj
