@@ -17,7 +17,7 @@ export class BoardObject<Shape extends BaseShape> {
   get pos() { return this[Data].pos }
 }
 
-type AnyBoardObject = BoardObject<any>
+export type AnyBoardObject = BoardObject<any>
 
 export class Board {
   #objects: Record<number, AnyBoardObject> = {}
