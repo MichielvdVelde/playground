@@ -44,7 +44,7 @@ function makeExploredObject(object: AnyBoardObject) {
 export class BoardMask {
   readonly board: Board
   #objects: Record<string, any> = {}
-  #explored: Record<number, Record<number, [time: number, ids: number[]]>> = []
+  #explored: Record<number, Record<number, [time: number, ids: number[]]>> = {}
 
   constructor(board: Board) {
     this.board = board
@@ -67,6 +67,11 @@ export class BoardMask {
     return !!this.#explored[pos[0]]?.[pos[1]]
   }
 
+  // Check if tile is visible during current turn
+  isVisible(pos: [x: number, y: number]) {
+    return this.#explored[pos[0]]?.[pos[1]]?.[0] === Game.time
+  }
+
   getInfoAtPosition(pos: [x: number, y: number]) {
     return this.#explored[pos[0]]?.[pos[1]]
   }
@@ -82,6 +87,10 @@ export class BoardMask {
 
   getObjectsAtPosition(pos: [x: number, y: number]) {
     return this.#explored[pos[0]]?.[pos[1]]?.[1]?.map(id => this.#objects[id])
+  }
+
+  getObjectById<Type extends AnyBoardObject>(id: number): Type | undefined {
+    return this.#objects[id] as Type | undefined
   }
 
   [PostTurn]() {
