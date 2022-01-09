@@ -26,7 +26,7 @@ export class Locus {
   }
 
   get pos(): [x: number, y: number] {
-    return this.#pos
+    return [...this.#pos]
   }
 
   get radius(): number {
@@ -48,7 +48,7 @@ export class Locus {
   }
 
   // Get all points inside the locus
-  get points(): [x: number, y: number][] {
+  get points(): readonly [x: number, y: number][] {
     return this.#points
   }
 
