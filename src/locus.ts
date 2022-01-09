@@ -48,6 +48,14 @@ export class Locus {
     }
   }
 
+  set radius(radius: number) {
+    if (this.#radius === radius) {
+      return
+    }
+    this.#radius = radius
+    this.#points = this.#calcPoints()
+  }
+
   // Get all points inside the locus
   get points(): [x: number, y: number][] {
     return this.#points
