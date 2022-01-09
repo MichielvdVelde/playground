@@ -1,5 +1,5 @@
 const Data = Symbol('data')
-const PostTick = Symbol('postTick')
+const PostTurn = Symbol('postTurn')
 
 var Game: any
 
@@ -78,7 +78,7 @@ export class BoardMask {
     return this.#explored[pos[0]]?.[pos[1]]?.[1]?.map(id => this.#objects[id])
   }
 
-  [PostTick]() {
+  [PostTurn]() {
     for (const [x, array] of Object.entries(this.#explored)) {
       for (const [y, info] of Object.entries(array)) {
         if (info[0] !== Game.time) {
@@ -96,7 +96,7 @@ export class BoardMask {
     }
   }
 
-  #removeObjectIds(objectIds: number[],) {
+  #removeObjectIds(objectIds: number[]) {
     for (const array of Object.values(this.#explored)) {
       for (const info of Object.values(array)) {
         if (info[1].length) {
