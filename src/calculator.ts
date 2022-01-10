@@ -44,23 +44,23 @@ export interface Reactor extends ShipPart {
 export type ShipSlot = Weapon | Carry | Enhancement
 
 export interface Weapon extends ShipPart {
-  type: WeaponTypes,
-  basePower: number,
-  baseFallOff: number,
-  basePowerInput: number
-  baseCooldown?: number,
+  readonly type: WeaponTypes,
+  readonly basePower: number,
+  readonly baseFallOff: number,
+  readonly basePowerInput: number
+  readonly baseCooldown?: number,
 }
 
 export interface Carry extends ShipPart {
-  resourceType?: ResourceTypes,
-  baseCapacity: number,
-  basePowerInput: number,
+  readonly resourceType?: ResourceTypes,
+  readonly baseCapacity: number,
+  readonly basePowerInput: number,
 }
 
 export interface Enhancement extends ShipPart {
-  type: string,
-  baseModifier: number,
-  basePowerInput: number,
+  readonly type: string,
+  readonly baseModifier: number,
+  readonly basePowerInput: number,
 }
 
 
@@ -79,26 +79,27 @@ export function calculateBaseStats(design: ShipDesign) {
   const drive = c2e<Drive>(design.drive)
   const reactor = c2e<Reactor>(design.reactor)
   const slots = design.slots.map((slot => c2e<ShipSlot>(slot)))
+  const enhancements = slots.filter(slot => isEnhancement(slot)) as Enhancement[]
 
   const baseHp = hull.hp
-    * slots.filter(slot => isEnhancement(slot) && slot.type === 'hp')
+    * enhancements.filter(slot => slot.type === 'hp')
       .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
 
   const baseMass = (hull.baseMass
     + drive.baseMass
     + reactor.baseMass
     + slots.map(slot => slot.baseMass).reduce((input, baseInput) => input + baseInput, 0))
-    * slots.filter(slot => isEnhancement(slot) && slot.type === 'mass')
+    * enhancements.filter(slot => slot.type === 'mass')
       .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
 
   const basePowerInput = (hull.basePowerInput
     + drive.basePowerInput
     + slots.map(slot => slot.basePowerInput).reduce((input, baseInput) => input + baseInput, 0))
-    * slots.filter(slot => isEnhancement(slot) && slot.type === 'power:input')
+    * enhancements.filter(slot => slot.type === 'power:input')
       .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
 
   const basePowerOutput = reactor.basePowerOutput
-    * slots.filter(slot => isEnhancement(slot) && slot.type === 'power:output')
+    * enhancements.filter(slot => slot.type === 'power:output')
       .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
 
   const baseResists = function () {
@@ -109,7 +110,7 @@ export function calculateBaseStats(design: ShipDesign) {
       resists[resist as ResistTypes] = hull.baseResists[resist as ResistTypes]
     })
 
-    slots.filter(slot => isEnhancement(slot) && slot.type.startsWith('resist:')).forEach(slot => {
+    enhancements.filter(slot => slot.type.startsWith('resist:')).forEach(slot => {
       // Stupid type guard
       if (isEnhancement(slot)) {
         const type = slot.type.substring(slot.type.indexOf(':') + 1) as ResistTypes
