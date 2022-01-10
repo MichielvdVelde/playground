@@ -112,7 +112,7 @@ export function calculateBaseStats(design: ShipDesign) {
 
     enhancements.filter(slot => slot.type.startsWith('resist:')).forEach(slot => {
       const type = slot.type.substring(slot.type.indexOf(':') + 1) as ResistTypes
-      resists[type] = resists[type]! * slot.baseModifier
+      resists[type] = (resists[type] ?? 1) * slot.baseModifier
     })
 
     return resists
