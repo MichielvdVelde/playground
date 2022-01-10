@@ -83,24 +83,24 @@ export function calculateBaseStats(design: ShipDesign) {
 
   const baseHp = hull.hp
     * enhancements.filter(slot => slot.type === 'hp')
-      .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
+      .reduce((count, slot) => count * slot.baseModifier, 1)
 
   const baseMass = (hull.baseMass
     + drive.baseMass
     + reactor.baseMass
     + slots.map(slot => slot.baseMass).reduce((input, baseInput) => input + baseInput, 0))
     * enhancements.filter(slot => slot.type === 'mass')
-      .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
+      .reduce((count, slot) => count * slot.baseModifier, 1)
 
   const basePowerInput = (hull.basePowerInput
     + drive.basePowerInput
     + slots.map(slot => slot.basePowerInput).reduce((input, baseInput) => input + baseInput, 0))
     * enhancements.filter(slot => slot.type === 'power:input')
-      .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
+      .reduce((count, slot) => count * slot.baseModifier, 1)
 
   const basePowerOutput = reactor.basePowerOutput
     * enhancements.filter(slot => slot.type === 'power:output')
-      .reduce((count, slot) => count * (slot as Enhancement).baseModifier, 1)
+      .reduce((count, slot) => count * slot.baseModifier, 1)
 
   const baseResists = function () {
     const resists: Partial<Record<ResistTypes, number>> = {}
