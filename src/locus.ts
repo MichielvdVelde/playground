@@ -2,7 +2,12 @@ import { distance2D } from './util.js'
 
 export class Locus {
   // Combine multile loci and return all points inside said loci
-  static combine(...loci: Locus[]): [x: number, y: number][] {
+  static combine(...loci: Locus[]): readonly [x: number, y: number][] {
+    if (!loci.length) {
+      return []
+    } else if (loci.length === 1) {
+      return loci[0].points
+    }
     const combined: [x: number, y: number][] = []
     const has = (pos: [x: number, y: number]) => combined.some(c => pos[0] === c[0] && pos[1] === c[1])
     for (const locus of loci) {
@@ -23,6 +28,11 @@ export class Locus {
       }
     }
     return false
+  }
+
+  // Check if a point is inside the radius
+  static isInside(center: [x: number, y: number], radius: number, pos: [x: number, y: number]) {
+    return distance2D(center, pos) <= radius
   }
 
   #pos: [x: number, y: number]

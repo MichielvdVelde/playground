@@ -4,6 +4,7 @@ const Data = Symbol('data')
 const PostTurn = Symbol('postTurn')
 
 var Game: any
+var me: number
 
 interface BaseShape {
   id: number,
@@ -19,6 +20,15 @@ export class BoardObject<Shape extends BaseShape> {
   get pos() { return this[Data].pos }
 }
 
+interface OwnedBoardObjectShape extends BaseShape {
+  owner: number
+}
+
+export class OwnedBoardObject<Shape extends OwnedBoardObjectShape> extends BoardObject<Shape> {
+  get owner() { return this[Data].owner }
+  get my() { return this.owner === me }
+}
+
 export type AnyBoardObject = BoardObject<any>
 
 export class Board {
@@ -28,7 +38,12 @@ export class Board {
     return Object.values(this.#objects).filter(object => object.pos[0] === pos[0] && object.pos[1] === pos[1])
   }
 
-  getObjectById<Type extends AnyBoardObject>(id: number): Type | undefined {
+  gertObjectsForPlayer(player: number) {
+    // @ts-expect-error
+    return Object.values(this.#objects).filter(object => object.owner === player)
+  }
+
+  getObjectById<Type extends AnyBoardObject = AnyBoardObject>(id: number): Type | undefined {
     return this.#objects[id] as Type | undefined
   }
 }
@@ -54,8 +69,7 @@ export class BoardMask {
 
   // Set all visible points to explored in the current turn
   explored(...loci: Locus[]) {
-    const combined = Locus.combine(...loci)
-    for (const pos of combined) {
+    for (const pos of Locus.combine(...loci)) {
       const info = this.#explored[pos[0]]?.[pos[1]]
       if (info) {
         info[0] = Game.time
